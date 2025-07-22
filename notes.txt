@@ -1,0 +1,86 @@
+to execute javascript outside the browser
+Chrome - V8 Javascript Engine(most popular) 
+Firefox - Spider Monkey 
+Safari - Apple JS Engine 
+
+nodejs built by Ryan Dahl
+nodejs = v8 engine + C++ embedding 
+nodejs is a runtime environment for javascript 
+
+nodejs has a interactive terminal that you can pull up using the command "node"
+
+all even version releases of node are LTS
+
+npm = node package manager (official package manager of nodejs)
+unlike in browser you can't access the window object in nodejs as its only present in the browser 
+||'ly alert('') also won't work 
+nodejs doesn't have any DOM related things 
+
+npm init => command to initialize npm in the folder (creates a package.json file)
+package.json => config file
+
+you can define script is scripts part of package.json like 
+scripts : {
+    "start" : "node index.js",
+    "dev" : "node index.js"
+}
+so when run "npm run dev" commands "node index.js" command gets executed
+"npm start" also runs "node index.js" 
+"npm run start" also runs "node index.js" 
+is start something special ? "npm dev" doesn't work
+
+Modular Programming
+
+===========================Node Modules==============================
+each .js file is a module?
+you can import modules into variable using require 
+const buffer = require('buffer'); //buffer is part of std ?? 
+
+const myModule = require('./myModule.js); //here ./ means current directory
+everything is a module is private by default. To access variables or functions of a module in other files you have to export it 
+require() is only available in nodejs and is not available in javascript
+you can also export using the exports object 
+
+========================File Handling==================================
+we use a module called "fs" to do file handling in nodejs 
+"fs" module is part of nodejs. So no need to install it
+if you run writeFile or writeFileSync mulitple times the files get overwritten each time 
+async (all read, write, append) functions don't return anything but expect a callback function 
+sync functions(all read, append and write) always return something
+
+========================NodeJs Architechture===========================
+client --(request)--> server(nodejs)
+
+all requests are first sent into the event queue 
+
+clients --(requests)--> eventQueue 
+
+all the these requests are sent to the eventLoop (one by one) ???
+
+eventLoop = it constantly tracks the eventQueue for requests if there are any it takes them one by one in FIFO manner
+
+requests are of 2 types (1)blocking (2)nonBlocking 
+
+blocking == synchronous tasks 
+nonBlocking == asynchronous tasks 
+
+if there is a nonBlocking(asynchronous task) in the eventQueue then the eventLoop picks it up and just executes it
+if there is a blocking (synchronous task) then the eventLoop asks for a worker thread from the ThreadPool
+ThreadPool = Pool of threads(workers) 
+If a thread is available ThreadPool assigns one to the eventLoop
+This worker thread is assigned to complete the synchronous task (blocking)
+Once the job is done the worker thread returns back to the ThreadPool
+If there aren't any worker threads available the the blocking request has to wait until one becomes available
+So its good practice in nodejs to avoid blocking operations as much as possible
+
+                                                    ------> nonBlocking request ----> execute immediately (thread is not blocked i.e succesive is executed while this op happens)
+clients --(requests)--> eventQueue --> eventLoop  --|
+                                                    ------> blocking request -----> wait for a worker thread to be assigned (thread is blocked while this task is waiting and while this is executing so further code can't be executed)
+
+
+default thread pool size = 4
+max thread pool size = max number of CPU cores (this can found out using os.cpus().length)
+
+=====================================HTTP Server=======================================
+
+ 
