@@ -82,5 +82,92 @@ default thread pool size = 4
 max thread pool size = max number of CPU cores (this can found out using os.cpus().length)
 
 =====================================HTTP Server=======================================
+callback function ?? 
+its a good practice to name the entry point index.js 
+difference between single quotes and double quotes in javascript 
 
- 
+=====================================URL================================================
+URL - uniform resource locator
+spaces are not allowed in url
+https://www.example.com/about
+"https" - prototcol
+"www.example.com" - domain (human friendly name for the IP address)
+"/about" - route or path 
+
+url with nested path https://www.example.com/about/employee/1
+
+url with query parameters https://www.example.com/about?locale=EN_GB
+query parameters = extra info that can be passed with the url. usually present after the ?
+there can be multiple query parameters in the url like https://www.example.com/about?locale=EN_GB&country=GB
+
+url parsing is not parsing multiple query parameters when sent over curl
+
+===========================HTTP METHODS=======================================
+when you type a URL in the browser and press enter browser makes a GET request 
+GET 
+POST 
+PUT(used for file transfer ??? )
+PATCH 
+DELETE
+
+===========================Express Framework==================================
+basically a library which replaces your handler function
+express() basically returns a function which can replace the handler function
+app.HTTP_METHOD(PATH, HANDLER)
+
+===========================NodeJs Versioning==================================
+"express": "^5.1.0" 
+In the version number 
+^   = install a version >= specified version but is compatible with the specified version(so any version between 4.18.2 and 5.0.0(not including) can be installed)(Install recommended updates, security and minor fixes automatically)
+N-1 = 5(increase in this number is because of a major and possibly breaking release)(backwards compatability is not promised so it can break current code bases)
+N-2 = 1(increase in this number is because of a recommended bug/security fix)
+N-3 = 0(Minor Fixes)(increase in this number is because of a optional update)
+
+"express": "~5.1.0"
+~   =   install only minor fixes automatically i.e install(5.1.0 and 5.2.0(not including))
+
+"express": "5.1.0" (install exact version)
+
+"express" : latest (automatically install the latest version)
+
+==========================REST API============================================
+REST - Representational State Transfer 
+a set of best practices regarding communication between client and server(request response cycle)
+based on client - server architechture
+respect the http methods(GET, POST, PUT, PATCH, DELETE) don't abuse them.
+Server Side Rendering(SSR) - the html, css and js code required for client is generated in the server itself. Use only when its known for sure that client is a web browser 
+Client Side Rendering(CSR) - the frontend template and the data are sent seperately and they are rendered on the clients device 
+SSR is usually faster for the client
+
+Dynamic API params
+/api/users/:id
+here id is a dynamic param. they usually start with :
+
+======================MIDDLEWARE=================================================
+a middleware is a function that executes on every request 
+usually its a pipeline of middlewares 
+client ---> [middleware1] ---> [middleware2] ...... ---->[middlewareN] ---> [actual backend function]
+a example of a middleware is authentication i.e. to authenticate the user and if the authentication is good then send it to the next middleware other wise drop the request
+middleware function have access to three things request object, response object and the next middleware function 
+app.user() ; => used define the middleware 
+next() => call the next middleware
+middleware can make changes to the request object i.e further middleware will see mutated request object 
+
+app.use((req, res, next) => {
+    req.authenticated = true;
+    next();
+})
+
+app.use((req, res, next) => {
+    req.backendReqId = uuid();
+    next();
+})
+
+https://expressjs.com/en/guide/writing-middleware.html
+https://expressjs.com/en/guide/using-middleware.html
+
+==================================HTTP HEADERS======================================
+they contain metadata about the request
+
+
+
